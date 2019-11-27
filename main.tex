@@ -1,0 +1,429 @@
+% 用 xelatex 编译
+%\documentclass[a4paper,cs4size,hyperref,fancyhdr]{ctexbook}
+\documentclass[UTF8,openright]{ctexbook}
+
+% 论文版面要求:
+% 统一按 word 格式A4纸（页面设置按word默认值）编排、打印、制作。
+% 正文内容字体为宋体；字号为小4号；字符间距为标准；行距为25磅(约0.88175cm)。
+
+%%%%% ===== 页面设置
+\usepackage[a4paper,top=2.54cm,bottom=2.54cm,left=3.17cm,right=3.17cm,%
+            ]{geometry}
+            
+\setlength{\parindent}{2em}
+%默认的弹性间距会导致文中某些排版flush的时候，出现大量空白。
+\setlength{\parskip}{0.5em} %指定固定段后间距，默认为弹性间距。
+\setlength{\intextsep}{10pt} %固定浮浮动体前后间距。
+
+
+%%%%% =====章节 标题 设置
+\ctexset{%
+  contentsname={\vspace{-3.5em}\centerline{\zihao{-3}\heiti 目\quad 录}\vspace{-0.7em}},
+  listfigurename={\vspace{-3.5em}\centerline{\zihao{-3}\heiti 插\ 图\ 目\ 录}\vspace{-0.5em}},
+  listtablename={\vspace{-3.5em}\centerline{\zihao{-3}\heiti 表\ 格\ 目\ 录}\vspace{-0.5em}},
+  bibname={\vspace{-3em}\centerline{\zihao{-3}\heiti 参\ 考\ 文\ 献}\vspace{3em}},
+  chapter={name={第,章},
+           number=\chinese{chapter}, %指定章序号为一二三。。。。
+           nameformat={\zihao{3}\bfseries},
+           titleformat={\zihao{3}\bfseries},
+           beforeskip={-10pt},
+           afterskip={20pt}
+           },
+  section={format=\raggedright,
+           nameformat={\zihao{4}\bfseries},
+           titleformat={\zihao{4}\bfseries},
+%           afterskip={1ex plus 0.2ex}
+           beforeskip={1ex},% 固定段前段后间距，
+           afterskip={1ex}
+           },
+  subsection={format=\raggedright,
+           nameformat={\zihao{-4}\bfseries},
+           titleformat={\zihao{-4}\bfseries},
+%           afterskip={0.5ex plus 0.1ex}
+           beforeskip={0.5ex},
+           afterskip={0.5ex}
+           }
+}
+%%%%% ===== 中英文字体
+\setmainfont{Times New Roman}
+%\setsansfont{Myriad Pro} % 无衬线字体 sans serif \sffamily
+%\setmonofont{Consolas}   % 等宽字体 typewriter \ttfamily
+%\newcommand{\Times}{\fontspec{Times New Roman}}
+%% 中文字体
+%\setCJKmainfont[BoldFont={Microsoft YaHei},ItalicFont={KaiTi}]{NSimSun}
+%\setCJKsansfont{Microsoft YaHei}
+%\setCJKmonofont{KaiTi}
+%\setCJKfamilyfont{STSong}{方正小标宋_GBK}\newcommand{\STSong}{\CJKfamily{STSong}}
+\setCJKfamilyfont{STSong}{STZhongsong}\newcommand{\STSong}{\CJKfamily{STSong}}
+
+%%%%% ===== 常用宏包
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage[amsmath,thref,thmmarks,hyperref]{ntheorem}
+\usepackage{graphicx,xcolor,float}
+\usepackage{fancyhdr}
+\usepackage{tocloft} % 设置目录中的条目间距
+
+
+\renewcommand\cftdot{\textsubscript{……}}
+\renewcommand\cftdotsep{0}
+
+\setlength{\cftbeforechapskip}{1pt}
+\renewcommand{\cftchapleader}{\cftdotfill{\cdot}}
+
+
+\usepackage{booktabs} % toprule, midrule, bottomrule
+\usepackage{varwidth} % 可变宽度的 parbox
+
+%%%%% ===== 参考文献与链接
+\usepackage[numbers,sort&compress,sectionbib,super, square]{natbib} %引用上标，禁用连续缩写。
+\newcommand{\upcite}[1]{\textsuperscript{\cite{#1}}}
+
+
+\usepackage[xetex,pagebackref]{hyperref}
+\hypersetup{CJKbookmarks=true,colorlinks=true,citecolor=blue,%
+            linkcolor=blue,urlcolor=blue,bookmarksnumbered=true,%
+	        bookmarksopen=true,breaklinks=true}
+	        
+	        
+	        
+\iffalse   % 调试时，可去掉，以用于显示引用位置。
+\renewcommand*{\backrefalt}[4]{%
+\ifcase #1 No citations.%
+\or Cited on page #2.%
+\else Cited on pages #2.%
+%\else #1 Cited on pages #2.%
+\fi
+}
+
+\else
+\renewcommand*{\backrefalt}[4]{}
+\fi
+
+%%%%% ===== 浮动图表的标题
+\usepackage[margin=2em,labelsep=space,skip=0.5em,font=normalfont]{caption}
+\DeclareCaptionFormat{mycaption}{{\heiti\color{blue} #1}#2{\kaishu #3}}
+\captionsetup{format=mycaption,tablewithin=chapter,figurewithin=chapter}%,belowskip=-10pt
+%\setlength{\belowcaptionskip}{-10pt}
+
+%%%%%% ===== 浮动图表的比例默认50%以下，否则无法浮动。
+\renewcommand\floatpagefraction{.9} %当浮动体小于页面90%时进行直接放置。
+\renewcommand\topfraction{.9}  
+\renewcommand\bottomfraction{.9}  
+\renewcommand\textfraction{.1}
+
+
+
+%%%%% ===== 算法
+\usepackage{algorithm,algpseudocode}
+
+%%%%% ===== 其他
+\usepackage{ulem}
+\def\ULthickness{1pt}
+
+
+
+
+%%%%%===== Code Style代码
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Scala,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+
+%%%%% ===== 自定义命令
+%\renewcommand{\C}{\mathbb{C}}
+%\newcommand{\R}{\mathbb{R}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%% ===== 格式
+\input{format.tex}
+\zihao{-4}
+
+%%%%% ===== 中文封面信息
+\graduateyear{2020} % 毕业年份
+\class{   } % 分类号（TPxxx.x）
+\ctitle{\uline{标题标题标题标题标题标题\linebreak 标题标题标题标题标题标题}}
+\def\cctitle{标题标题标题标题标题标题标题标题标题标题标题标题} % 在原创性声明中使用, 不能出现手工换行
+\caffil{计算机科学与技术学院}
+\cmajor{计算机技术} % 计算数学
+\cdirection{嵌入式系统} % 数值代数
+\csupervisor{xxx\, 副教授}
+\cauthor{陈xx}
+\def\ccauthor{\@cauthor} % 在答辩委员会中使用
+\studentid{51174506xxx}
+\cdate{20xx 年 10 月}
+
+%%%%% ===== 英文封面信息
+\etitle{\uline{Research and Implementation of  \linebreak What You want to do}}
+\eaffil{School of Computer Science and Technology} 
+\emajor{Computer Technology} % Computational Mathematics
+\edirection{Embedded System} % Numerical Algebra
+\esupervisor{Prof. XXX Shen}
+\eauthor{XXX Chen}
+\edate{10, 20xx}
+
+%%%%% ===== 生成封面 ===== %使用不同的页边距
+\newgeometry{top=2.0cm,bottom=2.0cm,left=2.5cm,right=2.5cm}
+{
+\renewcommand{\baselinestretch}{1.6}
+\makecover
+}
+
+\restoregeometry %还原页边距
+
+%%%%% ===== 原创性声明与著作权使用声明 =====
+\include{Declaration}
+
+%%%%% ===== 答辩委员会成员 =====
+\include{Committee}
+
+\frontmatter
+
+%\restoregeometry
+
+\makeatletter
+\let\ps@plain\ps@fancy% Let 'plain' be exactly the same as 'fancy'
+\makeatother
+
+\pagestyle{fancy} %使用fancy页眉和页脚
+\fancyfoot[LO,LE]{}
+\fancyfoot[RO,RE]{{\thepage}} %单页打印，此处页码固定右下角
+
+
+
+%%%%% ===== 中文摘要 =====
+
+\include{Abstract_chs}
+
+%%%%% ===== 英文摘要 =====
+\include{Abstract_eng}
+
+%%%%% ===== 生成目录
+
+\let\cleardoublepage\clearpage
+
+%\pagestyle{empty}
+\setcounter{tocdepth}{2} %向下显示到两级标题
+\phantomsection % 修复引用问题
+
+
+\addcontentsline{toc}{chapter}{目录}
+
+\tableofcontents
+
+\newpage%{\pagestyle{empty}\cleardoublepage}
+\pagestyle{fancy}
+
+\addcontentsline{toc}{chapter}{插图目录}
+\listoffigures % 插图目录
+
+
+\newpage%{\pagestyle{empty}\cleardoublepage}
+\pagestyle{fancy}
+\fancyfoot[RO,RE]{{\thepage}}
+\addcontentsline{toc}{chapter}{表格目录}
+\listoftables  % 表格目录
+
+%\clearpage%{\pagestyle{empty}\cleardoublepage}
+
+%%%%%% ===== 正文部分 ===== %%%%%
+\mainmatter
+\linespread{1.6}\selectfont % 行距固定25磅，宋体
+%\setlength{\baselineskip}{0.88175cm}
+\pagestyle{fancy}
+\fancyfoot[RO,RE]{}
+\fancyfoot[LO,LE]{} %清空之前的页码排版。
+\fancyfoot[RO,LE]{{\thepage}}%双面打印，页码向外排布。
+
+\chapter{引言}
+\section{研究背景和意义}
+
+
+引言部分\cite{bi:hw-ml-challenges}, 介绍论文研究课题的应用背景或者问题来源,\cite{bi:hw-sw-co-design}
+一些基本概念, 现有成果等等.
+
+
+\section{国内外研究现状}
+
+
+现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍.
+现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍.
+现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍.
+现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍.
+现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍.
+现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍, 现有成果介绍.
+
+\section {本研究工作内容和章节安排}
+
+
+\chapter {相关技术原理的分析与研究}
+
+
+\section {xxx相关技术原理分析与研究}
+
+
+\section {本章小节}
+
+
+这是小节，这是小节，这是小节，这是小节，这是小节，这是小节，
+这是小节，这是小节，这是小节，这是小节，这是小节，这是小节，
+这是小节，这是小节，这是小节，这是小节，这是小节，这是小节，
+这是小节，这是小节，这是小节，这是小节，这是小节，这是小节，
+
+这是小节，这是小节，这是小节，这是小节，这是小节，这是小节，
+这是小节，这是小节，这是小节，这是小节，这是小节，这是小节，
+这是小节，这是小节，这是小节，这是小节，这是小节，这是小节，
+这是小节，这是小节，这是小节，这是小节，这是小节，这是小节，
+
+\clearpage %{\pagestyle{empty}\cleardoublepage}
+
+\chapter {相关算法的研究}
+
+
+\section {相关技术原理简述}
+
+
+\subsection {xxx算法简述}\label{section:acoustic-feat}
+
+\subsection {xxx模型简述}
+
+
+
+\begin{equation}
+\label{eq:DFT}
+A_k = \sum_{n=0}^{N-1} {e^{-i {2 \pi \over N}}}^{kn} a_n 
+\end{equation}
+
+
+这是对公式的引用,\autoref{eq:DFT}中的引用
+
+\section{本章小节}
+
+本章我们对设计的xxx架构进行了详细的分析与实际性能对比测试。
+
+
+
+\chapter {总结与展望}
+
+\section {工作总结}
+
+这是总结, 这是总结, 这是总结, 这是总结, 这是总结, 
+这是总结, 这是总结, 这是总结, 这是总结, 这是总结, 
+这是总结, 这是总结, 这是总结, 这是总结, 这是总结, 
+这是总结, 这是总结, 这是总结, 这是总结, 这是总结, 
+
+\newpage
+\section {工作展望}
+
+这是展望, 这是展望, 这是展望, 这是展望, 这是展望.
+这是展望, 这是展望, 这是展望, 这是展望, 这是展望.
+这是展望, 这是展望, 这是展望, 这是展望, 这是展望.
+这是展望, 这是展望, 这是展望, 这是展望, 这是展望.
+
+\clearpage%{\pagestyle{empty}\cleardoublepage}
+\backmatter
+\linespread{1.6}\selectfont
+%%%% ===== 参考文献 =====
+\setlength{\bibsep}{1ex}  % 需 natbib 宏包
+\begin{thebibliography}{99}
+\addcontentsline{toc}{chapter}{参考文献}
+\thispagestyle{fancy}
+
+% \addtolength{\itemsep}{-5pt}
+
+
+\bibitem{bi:hw-ml-challenges}
+Sze V, Chen Y H, Emer J, et al. Hardware for machine learning: Challenges and opportunities[C]//2017 IEEE Custom Integrated Circuits Conference (CICC). IEEE, 2017: 1-8.
+
+\bibitem{bi:hw-sw-co-design}
+Brian Bailey, Hardware-Software Co-Design Reappears. semiengineering .2019-07-25. https://semiengineering.com/hardware-software-co-design-reappears/
+ 
+
+
+
+\end{thebibliography}
+
+
+\clearpage{\pagestyle{fancy}\cleardoublepage}
+\chapter*{附录}
+\addcontentsline{toc}{chapter}{附录}
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分.
+
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分.
+
+\newpage 
+
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分,
+附录部分, 附录部分, 附录部分, 附录部分, 附录部分.
+
+
+
+
+
+
+\clearpage{\pagestyle{fancy}\cleardoublepage}
+\chapter*{致谢}
+\addcontentsline{toc}{chapter}{致谢}
+
+\linespread{1.4}\selectfont
+
+
+“日月忽其不淹兮，春与秋其代序”，丽娃河畔，共青路边，梧桐落木，一如既往。两年前，我乘着开往这座城市的列车，来到华师大，努力想要看清这周围的每一个角落。千来个日夜，莘莘研学之路，终以这论文的结束而告一段落。
+
+
+如今，这两年多的时光还可算明了。人生路漫漫，但难免有所遗憾。正如这篇毕业论文，撰写接近尾声之际，仍然还有许多尚待修补的地方，限于当下能力有限，只好尽力而为。也许期年之后，回顾此文，自惭之至，但也可看清来时之路。
+
+
+
+\begin{flushright}
+陈xx
+
+于理科大楼实验室的工作台
+
+2019年10月10日
+\end{flushright}
+
+
+
+\iffalse  %科研成果，貌似不用有需要的加上。
+
+\clearpage{\pagestyle{fancy}\cleardoublepage}
+\chapter*{研究成果}
+\addcontentsline{toc}{chapter}{研究成果}
+
+软件蓍作权：基于xxxx系统 V1.0
+
+\fi
+
+\end{document}
