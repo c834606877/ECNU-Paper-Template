@@ -8,6 +8,9 @@
 
 浮动体的前后间距，通过intextsep来调整。
 
+Demo：
+https://raw.githubusercontent.com/huozhiwei/ECNU-Paper-Template/master/main.pdf
+
 可能仍然存在许差错，欢迎通过答辩的同学发送pr。
 
 切记：
